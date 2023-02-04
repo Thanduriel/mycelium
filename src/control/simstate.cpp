@@ -8,11 +8,11 @@
 
 namespace control {
 
-	constexpr glm::vec2 MAP_SIZE = glm::vec2(1920.f/2.f, 1080.f/2.f);
+	constexpr glm::vec2 MAP_SIZE = glm::vec2(1920.f, 1080.f);
 	constexpr float PARTITION_SIZE = 24.f;
 
 	SimState::SimState()
-		: m_world(graphics::Camera(MAP_SIZE, glm::vec2(0.5f), -1.f, 1.f))
+		: m_world(graphics::Camera(MAP_SIZE, glm::vec2(0.0f), -1.f, 1.f))
 	{
 		using FloatT = double;
 

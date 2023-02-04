@@ -18,10 +18,13 @@ namespace systems {
 		using Components = ComponentTuple<
 			WriteAccess<components::Position2D>
 		, WriteAccess<components::Growth>
-		, WriteAccess<components::Hyphal>>;
+		, WriteAccess<components::Hyphal>
+		, WriteAccess<components::BaseColor>>;
 		void update(Components _comps, EntityCreator& _creator
-			, graphics::Camera& _camera);
+			, graphics::Camera& _camera
+			, game::NeighbourStructure& _neighbourStructure);
 	private:
 		std::unique_ptr<input::InputInterface> m_inputs;
+		std::size_t m_currentColor = 0;
 	};
 }}

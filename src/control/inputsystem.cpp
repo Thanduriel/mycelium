@@ -43,14 +43,25 @@ namespace systems {
 
 
 	void InputSystem::update(Components _comps, game::EntityCreator& _creator
-		, graphics::Camera& _camera)
+		, graphics::Camera& _camera
+		, game::NeighbourStructure& _neighbourStructure)
 	{
+		constexpr std::array<Color, 3> COLORS = { {
+			{0.f, 1.f, 0.f, 0.5f},
+			{1.f, 0.f, 0.f, 0.5f},
+			{0.f, 0.f, 1.f, 0.5f},
+		} };
+
 		if (m_inputs->getKeyState(Actions::SPAWN_PARTICLE) == ActionState::PRESSED)
 		{
-			CreateComponents(_comps, _creator.create())
-				.add<components::Position2D>(glm::vec2(0.f))
+			const glm::vec3 pos = _camera.toWorldSpace(m_inputs->getCursorPos());
+			const Entity ent = _creator.create();
+			_neighbourStructure.add(pos, ent);
+			CreateComponents(_comps, ent)
+				.add<components::Position2D>(pos)
 				.add<components::Growth>(glm::vec2(1.0f, 0.f))
-				.add<components::Hyphal>();
+				.add<components::Hyphal>()
+				.add<components::BaseColor>(COLORS[m_currentColor++]);
 		}
 	}
 }}

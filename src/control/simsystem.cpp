@@ -25,24 +25,27 @@ namespace systems {
 		{
 			glm::vec2 position;
 			glm::vec2 direction;
-			bool branch;
-			glm::vec2 branchDirection;
+			float age;
+			Color color;
 		};
+
 		std::vector<Spawn> spawns;
 		std::vector<Entity> deadEnds;
 
 		_comps.execute([&, _dt](Entity ent
 			, const Hyphal& hyphal
 			, const Position2D& position
+			, const BaseColor& color
 			, Growth& growth)
 			{
 				growth.age += _dt;
+				const glm::vec2 pos = position.value + growth.direction * growth.age * Growth::AGE_LEN_SCALE;
 
 				glm::vec2 grad{};
-						// gradient of density field
-				_neighbourStructure.iterateNeighbours(position.value, 100.f, [ent, position, &grad](const glm::vec2& v, Entity oth) {
+				// gradient of density field
+				_neighbourStructure.iterateNeighbours(pos, 100.f, [ent, pos, &grad](const glm::vec2& v, Entity oth) {
 					if (ent != oth) {
-						grad += normGrad<-2>(v, position.value);
+						grad += normGrad<-1>(v, pos);
 					}
 					});
 				const float lenGrad = glm::length(grad);
@@ -60,41 +63,33 @@ namespace systems {
 
 				constexpr float branchThreshold = 40.f;
 				std::uniform_real_distribution<float> branchDist(1.f, branchThreshold);
-				if (branchDist(m_rng) < growth.age)
-				{
-					const glm::vec2 pos = position.value + growth.direction * growth.age * Growth::AGE_LEN_SCALE;
-					spawns.push_back({ pos, growth.direction, true, glm::normalize(2.f * grad + growth.direction) });
-					deadEnds.push_back(ent);
-				}
-				else if (s < 0.0)
+				if (s < 0.0)
 				{
 					deadEnds.push_back(ent);
 				}
-				else if(s < 0.8 && growth.age > 0.5f)
+				else if (branchDist(m_rng) < growth.age)
+				{
+					spawns.push_back({ pos, growth.direction, 0.f, color.value });
+					spawns.push_back({ pos, glm::normalize(2.f * grad + growth.direction), 0.f, color.value });
+					deadEnds.push_back(ent);
+				}
+				else if(s < 0.8f && growth.age > 0.5f)
 				{
 					// change of direction
-					const glm::vec2 pos = position.value + growth.direction * growth.age * Growth::AGE_LEN_SCALE;
-					spawns.push_back({ pos, grad, false });
+					spawns.push_back({ pos, grad, 0.f, color.value });
 					deadEnds.push_back(ent);
 				}
 			});
 
 		for (const Spawn& spawn : spawns)
 		{
-			const Entity ent0 = _creator.create();
-			_neighbourStructure.add(spawn.position, ent0);
-			CreateComponents(_comps, ent0)
+			const Entity ent = _creator.create();
+			_neighbourStructure.add(spawn.position, _creator.create());
+			CreateComponents(_comps, ent)
 				.add<components::Position2D>(spawn.position)
-				.add<components::Growth>(spawn.direction)
-				.add<components::Hyphal>();
-
-			if (spawn.branch)
-			{
-				CreateComponents(_comps, _creator.create())
-					.add<components::Position2D>(spawn.position)
-					.add<components::Growth>(glm::normalize(spawn.branchDirection))
-					.add<components::Hyphal>();
-			}
+				.add<components::Growth>(spawn.direction, spawn.age)
+				.add<components::Hyphal>()
+				.add<components::BaseColor>(spawn.color);
 		}
 
 		for (Entity ent : deadEnds)

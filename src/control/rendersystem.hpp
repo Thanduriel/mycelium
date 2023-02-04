@@ -16,7 +16,8 @@ namespace systems {
 
 		using Components = ComponentTuple<
 			ReadAccess<components::Position2D>
-			, ReadAccess<components::Growth>>;
+			, ReadAccess<components::Growth>
+			, ReadAccess<components::BaseColor>>;
 		void update(Components _components, const graphics::Camera& _camera);
 
 	private:
