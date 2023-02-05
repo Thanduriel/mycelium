@@ -19,7 +19,8 @@ namespace systems {
 			WriteAccess<components::Position2D>
 			, WriteAccess<components::Growth>
 			, WriteAccess<components::Hyphal>
-			, WriteAccess<components::BaseColor>>;
+			, WriteAccess<components::BaseColor>
+			, WriteAccess<components::Resource>>;
 		void update(Components _comps, float _dt, EntityCreator& _creator, game::NeighbourStructure& _neighbourStructure);
 	private:
 		math::random::xoshiro128ss m_rng;

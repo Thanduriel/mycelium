@@ -8,17 +8,16 @@
 
 namespace control {
 
-	constexpr glm::vec2 MAP_SIZE = glm::vec2(1920.f, 1080.f);
 	constexpr float PARTITION_SIZE = 24.f;
 
 	SimState::SimState()
-		: m_world(graphics::Camera(MAP_SIZE, glm::vec2(0.0f), -1.f, 1.f))
+		: m_world(graphics::Camera(game::MAP_SIZE, glm::vec2(0.0f), -1.f, 1.f))
 	{
 		using FloatT = double;
 
 		graphics::Device::setClearColor(glm::vec4(0.2f, 0.1f, 0.2f, 1.f));
 
-		m_world.addResource<game::NeighbourStructure>(MAP_SIZE, MAP_SIZE / PARTITION_SIZE);
+		m_world.addResource<game::NeighbourStructure>(game::MAP_SIZE, game::MAP_SIZE / PARTITION_SIZE);
 		m_world.addSystem(std::make_unique<game::systems::SimSystem>(), game::SystemGroup::Process);
 		
 		m_world.addSystem(std::make_unique<game::systems::InputSystem>(), game::SystemGroup::Process);

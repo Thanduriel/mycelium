@@ -19,7 +19,8 @@ namespace systems {
 			WriteAccess<components::Position2D>
 		, WriteAccess<components::Growth>
 		, WriteAccess<components::Hyphal>
-		, WriteAccess<components::BaseColor>>;
+		, WriteAccess<components::BaseColor>
+		, WriteAccess<components::Resource>>;
 		void update(Components _comps, EntityCreator& _creator
 			, graphics::Camera& _camera
 			, game::NeighbourStructure& _neighbourStructure);

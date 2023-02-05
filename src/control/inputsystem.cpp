@@ -59,9 +59,19 @@ namespace systems {
 			_neighbourStructure.add(pos, ent);
 			CreateComponents(_comps, ent)
 				.add<components::Position2D>(pos)
-				.add<components::Growth>(glm::vec2(1.0f, 0.f))
+				.add<components::Growth>(math::random::direction2D())
 				.add<components::Hyphal>()
 				.add<components::BaseColor>(COLORS[m_currentColor++]);
+		}
+
+		if (m_inputs->getKeyState(Actions::CAMERA_ROTATE) == ActionState::PRESSED)
+		{
+			const glm::vec3 pos = _camera.toWorldSpace(m_inputs->getCursorPos());
+			const Entity ent = _creator.create();
+
+			CreateComponents(_comps, ent)
+				.add<components::Position2D>(pos)
+				.add<components::Resource>();
 		}
 	}
 }}
