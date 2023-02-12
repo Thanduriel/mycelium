@@ -30,7 +30,7 @@ namespace systems {
 	template<float Exp>
 	glm::vec2 normGrad(const glm::vec2& v, const glm::vec2& p, float dSqr)
 	{
-		const float s = Exp * std::powf(dSqr, Exp-1);
+		const float s = Exp * std::pow(dSqr, Exp-1);
 		return 2.f * s * glm::vec2(p[0] - v[0], p[1] - v[1]);
 	}
 
@@ -111,7 +111,6 @@ namespace systems {
 				for (const glm::vec2& r : resources)
 				{
 					const float dSqr = sqrDist(r, pos);
-					const auto te = resourcePullScale * normGrad<-2.f>(r, pos, dSqr);
 					grad -= resourcePullScale * normGrad<-1.f>(r, pos, dSqr);
 				}
 

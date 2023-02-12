@@ -1,7 +1,6 @@
 #pragma once
 
 #include "components.hpp"
-#include "simulation/pointbin.hpp"
 #include <engine/game/components/simpleComponents.hpp>
 #include <engine/game/components/components2D.hpp>
 #include <engine/game/core/componentaccess.hpp>
@@ -23,6 +22,6 @@ namespace systems {
 			, WriteAccess<components::Resource>>;
 		void update(Components _comps, float _dt, EntityCreator& _creator, game::NeighbourStructure& _neighbourStructure);
 	private:
-		math::random::xoshiro128ss m_rng;
+		math::random::DefaultRandomEngine m_rng;
 	};
 }}

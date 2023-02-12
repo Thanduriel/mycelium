@@ -1,16 +1,16 @@
 #pragma once
 
-#include "../simulation/pointbin.hpp"
+#include <engine/utils/containers/pointbin.hpp>
 #include <engine/game/core/entity.hpp>
 #include <glm/glm.hpp>
 #include <array>
 
 namespace game {
 
-	using NeighbourStructure = sim::PointBin<game::Entity, 2, float>;
+	using NeighbourStructure = utils::PointBin<game::Entity, 2, float>;
 	constexpr glm::vec2 MAP_SIZE = glm::vec2(1920.f, 1080.f);
 
-namespace components{
+namespace components {
 
 	struct Growth
 	{
@@ -18,7 +18,7 @@ namespace components{
 		static constexpr float REROLL_BRANCH_TIME = 2.f;
 
 		Growth(const glm::vec2& _dir, float _age = 0.f) 
-			: direction(_dir), age(_age), length(0.f), grad{}, branchTime(REROLL_BRANCH_TIME) {}
+			: direction(_dir), grad{}, age(_age), length(0.f), branchTime(REROLL_BRANCH_TIME) {}
 
 		glm::vec2 direction;
 		glm::vec2 grad;

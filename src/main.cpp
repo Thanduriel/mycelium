@@ -1,4 +1,3 @@
-#include "simulation/cubicmesh.hpp"
 #include "control/simstate.hpp"
 #include <engine/game/core/game.hpp>
 #include <iostream>

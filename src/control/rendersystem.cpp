@@ -22,10 +22,10 @@ namespace systems{
 				m_lineRenderer.draw(glm::vec3(pos.value.x, pos.value.y, 0.f),
 					glm::vec3(end.x, end.y, 0.f), _color.value, thickness * std::sqrt(std::log(1.f + growth.age)));
 
-			//	const glm::vec2 endG = end + growth.grad * 50.f;
-			//	constexpr glm::vec4 color2(1.f, 1.f, 1.f, 0.25f);
-			//	m_lineRenderer.draw(glm::vec3(end.x, end.y, 0.f),
-			//		glm::vec3(endG.x, endG.y, 0.f), color2, 0.005f);
+				const glm::vec2 endG = end + growth.grad * 50.f;
+				constexpr glm::vec4 color2(1.f, 1.f, 1.f, 0.25f);
+				m_lineRenderer.draw(glm::vec3(end.x, end.y, 0.f),
+					glm::vec3(endG.x, endG.y, 0.f), color2, 0.005f);
 			});
 		m_lineRenderer.present(_camera);
 	}
