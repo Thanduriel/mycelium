@@ -57,7 +57,7 @@ namespace systems {
 			glm::vec2 position;
 			glm::vec2 direction;
 			float age;
-			Color color;
+			graphics::Color color;
 		};
 
 		std::vector<Spawn> spawns;

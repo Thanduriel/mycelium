@@ -6,6 +6,7 @@
 #include <engine/graphics/resources.hpp>
 #include <engine/math/random.hpp>
 #include <GLFW/glfw3.h>
+#include <glm/gtx/color_space.hpp>
 #include <numbers>
 
 
@@ -46,22 +47,20 @@ namespace systems {
 		, graphics::Camera& _camera
 		, game::NeighbourStructure& _neighbourStructure)
 	{
-		constexpr std::array<Color, 3> COLORS = { {
-			{0.f, 1.f, 0.f, 0.5f},
-			{1.f, 0.f, 0.f, 0.5f},
-			{0.f, 0.f, 1.f, 0.5f},
-		} };
 
 		if (m_inputs->getKeyState(Actions::SPAWN_PARTICLE) == ActionState::PRESSED)
 		{
 			const glm::vec3 pos = _camera.toWorldSpace(m_inputs->getCursorPos());
+			const graphics::Color col = graphics::Color(
+				glm::rgbColor(glm::vec3(math::random::uniform()*255.f, 1.f, 1.f)), 1.f);
+
 			const Entity ent = _creator.create();
 			_neighbourStructure.add(pos, ent);
 			CreateComponents(_comps, ent)
 				.add<components::Position2D>(pos)
 				.add<components::Growth>(math::random::direction2D())
 				.add<components::Hyphal>()
-				.add<components::BaseColor>(COLORS[m_currentColor++]);
+				.add<components::BaseColor>(col);
 		}
 
 		if (m_inputs->getKeyState(Actions::CAMERA_ROTATE) == ActionState::PRESSED)
